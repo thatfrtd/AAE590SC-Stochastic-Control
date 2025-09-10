@@ -1,0 +1,82 @@
+% !TeX root = ../../main.tex
+\documentclass[../AAE590ACA_HW1.tex]{subfiles}
+\begin{document}
+\section*{(1.2) Three-Body Problem}
+\rhead{Problem 2}
+
+Next, we consider the spacecraft orbital motion in a three-body system.
+
+\subsection*{(a) Circular Restricted Three-Body Problem (CR3BP)}
+
+Consider the Earth-Moon system using the circular restricted three-body problem (CR3BP). The parameter values for this problem are provided in Table \ref{table:dynparam2}.
+
+\begin{table}[h]
+    \centering
+    \caption{Assumed dynamical parameter values (Problem (1.2))}
+    \begin{tabular}{lllc}
+        \hline \hline 
+        Parameter & Symbol & Value & Unit \\
+        \hline  
+        Earth-Moon distance & \( d_{\text{Earth-Moon}} \) & \( 3.8475 \times 10^{5} \) & km \\
+        Earth-Moon barycenter GM & \( G(M_{\text{Earth}} + M_{\text{Moon}}) \) & \( 4.0350 \times 10^{5} \) & km\(^3\)/s\(^2\) \\
+        Mass ratio & \( \mu \) & \( 1.2151 \times 10^{-2} \) & - \\
+        \hline \hline 
+    \end{tabular}
+    \label{table:dynparam2}
+\end{table}
+
+Simulate the spacecraft's orbital motion in the CR3BP system with the initial conditions and propagation times given in Table \ref{table:synIC}. Plot each trajectory in the synodic frame in the dimensional system, marking the positions of the Earth and Moon.
+
+\begin{table}[h]
+    \centering
+    \caption{Initial conditions for CR3BP simulations (non-dimensional)}
+    \begin{tabular}{cccccccc}
+        \hline \hline 
+        IC \# & \( x_{0} \) & \( y_{0} \) & \( z_{0} \) & \( \dot{x}_{0} \) & \( \dot{y}_{0} \) & \( \dot{z}_{0} \) & Propagation time \\
+        \hline 
+        IC-1 & 1.2 & 0 & 0 & 0 & -1.06110124 & 0 & 6.20628 \\
+        IC-2 & 0.85 & 0 & 0.17546505 & 0 & 0.2628980369 & 0 & 2.5543991 \\
+        IC-3 & 0.05 & -0.05 & 0 & 4.0 & 2.6 & 0 & 15.0 \\
+        \hline \hline 
+    \end{tabular}
+    \label{table:synIC}
+\end{table}
+
+\subsection*{(b) Third-Body Perturbation in the ECI Frame}
+
+The orbital motion under the influence of Earth and Moon gravity can also be modeled as a perturbed two-body problem, where the Moon exerts a third-body perturbation. To do this, re-define the ECI frame such that:
+\begin{itemize}
+\item \( \hat{\boldsymbol{n}}_{1} \) is aligned with the Earth-Moon line at the epoch.
+\item \( \hat{\boldsymbol{n}}_{3} \) is aligned with the normal vector of the Earth-Moon orbital plane.
+\end{itemize}
+
+The Moon's third-body perturbation in the ECI frame is given by:
+
+\[
+\boldsymbol{a}_{\mathrm{moon}}=-\mu_{\mathrm{moon}}\left(\frac{\boldsymbol{r}-\boldsymbol{r}_{\mathrm{moon}}}{\left\|\boldsymbol{r}-\boldsymbol{r}_{\mathrm{moon}}\right\|_{2}^{3}}+\frac{\boldsymbol{r}_{\mathrm{moon}}}{\left\|\boldsymbol{r}_{\mathrm{moon}}\right\|_{2}^{3}}\right),
+\]
+
+where:
+\begin{itemize}
+\item \( \mu_{\text{moon}} = 4.9028 \times 10^{3} \) km\(^3\)/s\(^2\),
+\item \( \boldsymbol{r}_{\text{moon}} \) is the Moon’s position relative to the ECI frame origin.
+\end{itemize}
+
+For simplicity, assume that the Moon's orbit is circular (similar to the CR3BP model), but about Earth instead of the barycenter.
+
+Convert the initial conditions in Table 4 to position and velocity vectors in the ECI frame and propagate the system using the perturbed two-body equations under the Moon’s third-body perturbation. Show the results in both:
+\begin{itemize}
+\item The ECI frame.
+\item The synodic frame.
+\end{itemize}
+
+\subsection*{(c) Consistency of Results}
+
+Compare the results obtained in parts (a) and (b). Discuss the consistency between the two approaches. If discrepancies are observed, explain the possible causes.
+
+\subsection*{(d) Extra Credit: Additional Perturbation}
+
+For extra credit, choose another perturbing force of your choice and derive its explicit mathematical expression. Include it in the three-body simulation (either in the CR3BP or ECI frame, at your discretion). Run the simulation with the same initial conditions from Table 4 and compare the results to the previous cases.
+
+The chosen perturbation does not need to be covered in class.
+\end{document}

@@ -1,0 +1,43 @@
+% !TeX root = ../../main.tex
+\documentclass[../AAE590SC_HW1.tex]{subfiles}
+\begin{document}
+
+\underline{Theorem}: (Linearity of Expectation)
+Let $R_0, R_1, \dots$ be random variables s.t. 
+\begin{gather*}
+    \sum_\text{i = 0}^\infty \mathbb{E}(|R_i|) \: \text{converges}
+\end{gather*}
+then
+\begin{gather*}
+    \mathbb{E}(\sum_\text{i = 0}^\infty R_i) = \sum_\text{i = 0}^\infty \mathbb{E}(R_i)
+\end{gather*}
+
+
+In light of this theorem, an example where $\mathbb{E}(\sum_\text{t = 0}^\infty C_t) \neq \sum_\text{t = 0}^\infty \mathbb{E}(C_t)$
+requires $\sum_\text{i = 0}^\infty \mathbb{E}(|R_i|)$ to diverge.
+
+This question illustrates the Gambler's paradox which will be described next. 
+\underline{Gambler's Paradox}: Consider of a fair Roulette wheel. The expectation of the sum of your expected wins for each bet is zero ($\mathbb{E}(R_i)=0$)
+Therefore,
+\begin{gather*}
+    \sum_\text{i = 0}^\infty \mathbb{E}(R_i) = 0
+\end{gather*}
+However, looking at the problem a different way, the probability of winning at least once as the number of spins approaches infinity is obviously one because it is a fair
+roulette wheel. Therefore, if a strategy can be devised that gaurentees that if the wheel lands on green and the player wins that the player can end the game and walk away with 
+a net gain in money, then $\mathbb{E}(\sum_\text{i = 0}^\infty R_i) > 0$.
+
+A well known strategy to achieve this is called "bet doubling." This strategy involves betting a starting amount, say $10$, and every time the player loses they double their bet. If the player wins they stop
+playing and go home. The nth bet is $10 * 2^{n-1}$ whil the probability you make the bet (you haven't won yet) is $2^{-n}$ so $C_n = 10 * 2^{n-1}$
+Therefore,
+\begin{gather*}
+    \mathbb{E}(|C_n|) = 10*2^{n-1}*2^{-n} = 20 \\
+    \implies \sum_\text{i = 0}^\infty \mathbb{E}(|C_i|) = 20 + 20 + \dots
+\end{gather*}
+This means that $\sum_\text{i = 0}^\infty \mathbb{E}(|C_i|)$ diverges so the theorem does not hold so
+\begin{gather*}
+    \mathbb{E}(\sum_\text{t = 0}^\infty C_t) \neq \sum_\text{t = 0}^\infty \mathbb{E}(C_t)
+\end{gather*}
+
+In solving this I referenced https://eng.libretexts.org/Bookshelves/Computer_Science/Programming_and_Computation_Fundamentals/Mathematics_for_Computer_Science_(Lehman_Leighton_and_Meyer)/04%3A_Probability/18%3A_Random_Variables/18.05%3A__Linearity_of_Expectation
+
+\end{document}

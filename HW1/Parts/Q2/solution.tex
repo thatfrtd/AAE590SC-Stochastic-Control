@@ -1,0 +1,28 @@
+% !TeX root = ../../main.tex
+\documentclass[../AAE590SC_HW1.tex]{subfiles}
+\begin{document}
+
+\begin{table}[h]
+    \centering
+    \caption{Feedback Control Policies Comparison}
+    \label{fig:ECIic}
+    \begin{tabular}{cccc}
+        \hline \hline 
+        Controller & State/Output & Static/Dynamic & Determinisitic/Random \\
+        \hline 
+        LQR & State & Static & Deterministic \\
+        LQG & State & Dynamic & Deterministic \\
+        P-Control & Output & Static & Determinisitic \\
+        PI-Control & Output & Dynamic & Deterministic \\
+        Q-Learning & Output & Dynamic & Randomized \\
+        Finite State Controller & Output & Static & Randomized \\
+        \hline \hline 
+    \end{tabular}
+\end{table}
+
+Finite state controller is randomized if the transitions from each node are determined by a probability distribution
+conditioned by the observation. However, if the state transitions are deterministic then the whole finite state controller is deterministic.
+
+An important observation is that state feedback is a special case of output feedback where your outputs give you full state information.
+
+\end{document}
