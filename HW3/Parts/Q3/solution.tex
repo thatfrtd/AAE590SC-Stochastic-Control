@@ -1,0 +1,44 @@
+% !TeX root = ../../main.tex
+\documentclass[../AAE590SC_HW3.tex]{subfiles}
+\begin{document}
+
+Trace property:
+For a gaussian random variable $a$ with mean $\bar{a}$ and covariance $A$
+\begin{gather*}
+    \E(a^T M a) = \bar{a}^T M \bar{a} + Tr(M A) \\
+\end{gather*}
+
+Looking at $t = T-1$
+\begin{gather*}
+    J_t(\pi_t) = \min_{\mu_{t:T-1}}\sum_{k=t}^{T-1}\E(\Norm[Q_k]{x_k}^2 + \Norm[R_k]{u_k}^2) + \E\Norm[Q_T]{x_T}^2 \\
+    J_{T-1}(\pi_{T-1}) = \E(\Norm[Q_k]{x_k}^2 + \Norm[R_k]{u_k}^2) + \E\Norm[Q_t]{X_t}^2 \\
+    Q_T = S_T \implies J_{T-1}(\pi_{T-1}) = \E(\Norm[Q_k]{x_k}^2 + \Norm[R_k]{u_k}^2) + \E(x_T^T S_T x_T) \\
+    x_{t+1} = A_t x_t + B_t u_t + w_t \implies \E(x_T^T S_T x_T) = \E((A_{T-1} x_{T-1} + B_{T-1} u_{T-1} + w_{T-1})^T S_T (A_{T-1} x_{T-1} + B_{T-1} u_{T-1} + w_{T-1})) \\
+    \E(w_t) = 0 \implies \E(x_T^T S_T x_T) = \E((A_{T-1} x_{T-1} + B_{T-1}u_{T-1})^T S_T (A_{T-1} x_{T-1} + B_{T-1}u_{T-1})) + Tr(S_T W_{T-1}) \\ 
+    \implies J_{T-1}(\pi_{T-1}) = \E(x_{T-1}^T Q_{T-1} x_{T-1} + u_{T-1}^T R_{T-1} u_{T-1} + (A_{T-1}x_{T-1})^T S_T (A_{T-1}x_{T-1}) + 2(B_{T-1}u_{T-1})^T S_T (A_{T-1} x_{T-1}) \\
+     + (B_{T-1} u_{T-1})^T S_T B_{T-1} u_{T-1}) + Tr(S_T W_{T-1}) \\
+    M_t = B_t^T S_t B_t + R_t \implies J_{T-1}(\pi_{T-1}) = \E(x_{T-1}^T Q_{T-1} x_{T-1} + u_{T-1}^T M_{T-1} u_{T-1} + (A_{T-1}x_{T-1})^T S_T (A_{T-1}x_{T-1}) \\
+    + 2(B_{T-1}u_{T-1})^T S_T (A_{T-1} x_{T-1})) + Tr(S_T W_{T-1}) \\
+    \text{Completing the square } \\
+    u_{T-1}^T M_{T-1} u_{T-1} + 2(B_{T-1}u_{T-1})^T S_T (A_{T-1} x_{T-1}) \\
+    = (u_{T-1} + M_{T-1}^{-1}B_{T-1}^T S_{T} A_{T-1}x_{T-1})^T M_{T-1} (u_{T-1} + M_{T-1}^{-1}B_{T-1}^T S_{T} A_{T-1}x_{T-1}) \\
+    - (B_{T-1}^T S_{T}A_{T-1}x_{T-1})^T M_{T-1}^{-1}(B_{T-1}^T S_{T}A_{T-1}x_{T-1}) \\
+    \text{know } S_t = A_t^T S_{t+1}A_t - A_t^T S_{t+1}B_t M_t^{-1}B_t^T S_{t+1} A_t + Q_t \\
+    \implies J_{T-1}(\pi_{T-1}) = \E(x_{T-1}^T S_{T-1} x_{T-1} + (u_{T-1} + M_{T-1}^{-1}B_{T-1}^T S_{T-1} A_{T-1}x_{T-1})^T M_{T-1} (u_{T-1} + M_{T-1}^{-1}B_{T-1}^T S_{T-1} A_{T-1}x_{T-1})) \\ 
+    + Tr(S_T W_{T-1}) \\
+    \text{know } u^* = -M_t^{-1} B_t^T S_t A_t\hat{x}_t \\
+    \implies J_{T-1}(\pi_{T-1}) = \E(x_{T-1}^T S_{T-1} x_{T-1} \\
+    + (M_{T-1}^{-1}B_{T-1}^T S_{T-1} A_{T-1}(\hat{x}_{T-1} - x_{T-1}))^T M_{T-1} (M_{T-1}^{-1}B_{T-1}^T S_{T-1} A_{T-1}(\hat{x}_{T-1} - x_{T-1})) \\
+    \text{know } \Theta_t = K_t^T M_t K_t \text{ and } K_t = -M_t^{-1}B_t^T S_t A_t \\
+    \implies J_{T-1}(\pi_{T-1}) = \E(x_{T-1}^T S_{T-1} x_{T-1} + (\hat{x}_{T-1} - x_{T-1})^T \Theta_{T-1}(\hat{x}_{T-1} - x_{T-1})) + Tr(S_T W_{T-1}) \\
+    \text{From trace rules } \E(x_{T-1}^T S_{T-1} x_{T-1}) = \hat{x}_{T-1}^{T} S_{T-1} \hat{x}_{T-1} + Tr(S_{T-1} P_{{T-1}|{T-1}}) \\
+    \implies J_{T-1}(\pi_{T-1}) = \hat{x}_{T-1}^T S_{T-1} \hat{x}_{T-1} + Tr(S_{T-1} P_{T-1|T-1}) + Tr(\Theta_{T-1} P_{T-1|T-1}) + Tr(S_T W_{T-1}) \\
+\end{gather*}
+
+Now we need to get the value function for $t = T-2, T-3, \dots, 1, 0$. This can be done in a similer way to in exercise 2.4)
+Finally,
+\begin{gather*}
+    J_t(\pi_t) = \Norm[S_t]{\hat{x}_t}^2 + Tr(S_t P_{t|t}) + \sum_{k = 1}^{T-1}(Tr(W_k S_{k+1}) + Tr(\Theta_k P_{k|k}))
+\end{gather*}
+
+\end{document}

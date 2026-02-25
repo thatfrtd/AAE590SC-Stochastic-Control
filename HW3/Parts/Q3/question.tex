@@ -1,0 +1,25 @@
+% !TeX root = ../../main.tex
+\documentclass[../AAE590SC_HW3.tex]{subfiles}
+\begin{document}
+\section*{(2.7) Stochastic LQG}
+\rhead{Problem 3}
+
+Define the value function 
+\begin{gather*}
+    J_t(\pi_t) = \min_{\mu_{t:T-1}}\sum_{k=t}^{T-1}\E(\Norm[Q_k]{x_k}^2 + \Norm[R_k]{u_k}^2) + \E\Norm[Q_T]{x_T}^2
+\end{gather*}
+Prove (2.69) by showing that
+\begin{gather*}
+    J_t(\pi_t) = Tr(S_t P_{t|t}) + \sum_{k=t}^{T-1}(Tr(W_k S_{k+1}) + Tr(\Theta_k P_{k|k}))
+\end{gather*}
+for each $t = 0, 1, \dots, T$
+
+\underline{Note}: (2.68) says the optimal policy of the value function is
+\begin{gather*}
+    \hat{x}_{t|t} = \hat{x}_{t|t-1} + L_t(y_t - C_t\hat{x}_{t|t-1}) \\
+    u_t = K_t\hat{x}_{t|t} \\
+    \hat{x}_{t+1|t} = A_t \hat{x}_{t|t} + B_t u_t
+\end{gather*}
+So Kalman filter + LQR
+
+\end{document}

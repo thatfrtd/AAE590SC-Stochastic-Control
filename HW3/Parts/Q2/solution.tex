@@ -1,0 +1,45 @@
+% !TeX root = ../../main.tex
+\documentclass[../AAE590SC_HW3.tex]{subfiles}
+\begin{document}
+
+Relevant properties of affine functions
+\begin{itemize}
+    \item affine functions are concave and convex
+    \item minimum of a sum of affine functions is concave
+\end{itemize}
+
+Relevant properties of concave functions
+\begin{itemize}
+    \item sum of concave functions is concave
+    \item minimum of a set of concave functions is concave
+\end{itemize}
+
+We are dealing with discrete $\X$ so the cost functions can be written as
+\begin{gather*}
+    \tilde{C}_t(\pi_t, u_t) = \int_{\X_T}C_t^\text{exit}(x_t)\pi_t(x_t)\text{d} x_t = \begin{pmatrix}C_t(x_1, u_t) \\ C_t(x_2, u_t) \\ \vdots \\ C_t(x_{n_x}, u_t)\end{pmatrix}^T \begin{pmatrix} \pi_t(x_1) \\ \pi_t(x_2) \\ \vdots \\ \pi_t(x_{n_x})\end{pmatrix} \\
+    \tilde{C}_T^\text{exit}(\pi_T) = \int_{\X_T}C_T^\text{exit}(x_T)\pi_T(x_T)\text{d} x_T = \begin{pmatrix}C_T^\text{exit}(x_1) \\ C_T^\text{exit}(x_2) \\ \vdots \\ C_T^\text{exit}(x_{n_x})\end{pmatrix}^T\begin{pmatrix} \pi_T(x_1) \\ \pi_T(x_2) \\ \vdots \\ \pi_T(x_{n_x})\end{pmatrix} \\
+\end{gather*}
+Now it is obvious that $\tilde{C}_t(\pi_t, u_t)$ and $\tilde{C}_T^\text{exit}(\pi_T)$ are both affine in $\pi_t$.
+
+$J_T(\pi_T) = \tilde{C}_T^\text{exit}(\pi_T)$ so $J_T(\pi_T)$ is also affine in $\pi_t$.
+\begin{gather*}
+    J_t(\pi_t) = \min_{u_t\in\U}\tilde{C}_t(\pi_t, u_t) + \int_{\pi_{t+1}\in\Delta (\X)} J_{t + 1}(\pi_{t+1})\tau(\pi_{t+1}|\pi_t,u_t)\text{d}\pi_{t+1} \\
+\end{gather*}
+Let $\tau(u_t) = \begin{pmatrix}\tau_{u_t}(1|1) & \tau_{u_t}(1|2) & \dots & \tau_{u_t}(1|n_x) \\ \tau_{u_t}(2|1) & \tau_{u_t}(2|2) & \dots & \tau_{u_t}(2|n_x) \\ \vdots & \vdots & \ddots & \\ \tau_{u_t}(n_x|1) & \tau_{u_t}(n_x|2) & & \tau_{u_t}(n_x|n_x) \end{pmatrix} = \tau(\pi_{t+1}|\pi_t,u_t)$ where $n_x$ is the number of states. Now, it can be seen that 
+\begin{gather*}
+    \pi_{t+1} = \tau(u_t)\pi_t
+\end{gather*}
+
+Focusing on $t = T - 1$
+\begin{gather*}
+    \int_{\pi_{T}\in\Delta (\X)} J_{T}(\pi_{T})\tau(\pi_{T}|\pi_{T - 1},u_{T - 1})\text{d}\pi_T = \begin{pmatrix}C_T^\text{exit}(x_1) \\ C_T^\text{exit}(x_2) \\ \vdots \\ C_T^\text{exit}(x_{n_x})\end{pmatrix}^T\tau(u_{T - 1})\begin{pmatrix} \pi_{T-1}(x_1) \\ \pi_{T-1}(x_2) \\ \vdots \\ \pi_{T-1}(x_{n_x})\end{pmatrix} \\ 
+    J_{T-1}(\pi_{T-1}) = \min_{u_{T-1}\in\U}\begin{pmatrix}C_{T-1}(x_1, u_{T-1}) \\ C_{T-1}(x_2, u_{T-1}) \\ \vdots \\ C_{T-1}(x_{n_x}, u_{T-1})\end{pmatrix}^T \begin{pmatrix} \pi_{T-1}(x_1) \\ \pi_{T-1}(x_2) \\ \vdots \\ \pi_{T-1}(x_{n_x})\end{pmatrix} + \begin{pmatrix}C_T^\text{exit}(x_1) \\ C_T^\text{exit}(x_2) \\ \vdots \\ C_T^\text{exit}(x_{n_x})\end{pmatrix}^T\tau(u_{T - 1})\begin{pmatrix} \pi_{T-1}(x_1) \\ \pi_{T-1}(x_2) \\ \vdots \\ \pi_{T-1}(x_{n_x})\end{pmatrix} \\
+    J_{T-1}(\pi_{T-1}) = \min_{u_{T-1}\in\U}(\begin{pmatrix}C_{T-1}(x_1, u_{T-1}) \\ C_{T-1}(x_2, u_{T-1}) \\ \vdots \\ C_{T-1}(x_{n_x}, u_{T-1})\end{pmatrix}^T + \begin{pmatrix}C_T^\text{exit}(x_1) \\ C_T^\text{exit}(x_2) \\ \vdots \\ C_T^\text{exit}(x_{n_x})\end{pmatrix}^T\tau(u_{T - 1}))\begin{pmatrix} \pi_{T-1}(x_1) \\ \pi_{T-1}(x_2) \\ \vdots \\ \pi_{T-1}(x_{n_x})\end{pmatrix}
+\end{gather*}
+It is obvious that $J_{T-1}(\pi_{T-1})$ is the minimum of a set of affine functions of $\pi_{T-1}$ (one for each control input). This results in an
+a convex piecewise affine function of $\pi_{T-1}$ with up to $n_u$ affine regions.
+
+For $t = T - 2, \dots, 1, 0$ the integration must be done by summing over the integrals of each affine region in $J_t(\pi_t)$ resulting in a sum of concave piecewise affine functions which when minimized is a concave piecewise affine function. Therefore, 
+by induction $J_t$ is piecewise affine and concave in $\pi_t\forall t = 0,1, \dots, T$.
+
+\end{document}

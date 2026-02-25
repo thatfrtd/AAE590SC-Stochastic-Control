@@ -1,0 +1,41 @@
+% !TeX root = ../../main.tex
+\documentclass[../AAE590SC_HW3.tex]{subfiles}
+\begin{document}
+
+\subsection{3.1.i)}
+\underline{Show}: that $\Norm[\infty]{J_k - J^*} \leq \gamma^k\Norm[\infty]{J_0 - J^*}$ \\
+\underline{Solution}: \\
+From Lemma 3.1, we know $\Norm[\infty]{TJ - T\bar{J}} \leq \gamma\Norm[\infty]{J - \bar{J}}$. Also, $TJ^* = J^*$.
+
+Proof by induction. \\
+\underline{Base Case}: $k = 1$. Let $J = J_0, \bar{J} = J^* \implies \Norm[\infty]{J_1 -J^*} \leq \gamma\Norm[\infty]{J - J^*}$
+
+\underline{Inductive Hypothesis}: $\Norm[\infty]{J_k - J^*} \leq \gamma^k\Norm[\infty]{J_0 - J^*} \implies \Norm[\infty]{J_{k+1} - J^*} \leq \gamma^{k+1}\Norm[\infty]{J_0 - J^*}$
+
+\underline{Inductive Step}: Assume $\Norm[\infty]{J_k - J^*} \leq \gamma^k\Norm[\infty]{J_0 - J^*}$ \\
+Let $J = J_k$, $\bar{J} = J^*$
+\begin{gather*}
+    TJ = TJ_k = J_{k+1}, \: T\bar{J} = TJ^* = J^* \\
+    \Norm[\infty]{J_{k+1} - J^*} \leq \gamma\Norm[\infty]{J_k - J^*} \\
+    \Norm[\infty]{J_{k+1} - J^*} \leq \gamma(\gamma^k\Norm[\infty]{J_0 - J^*}) \\
+    \Norm[\infty]{J_{k+1} - J^*} \leq \gamma^{k+1}\Norm[\infty]{J_0 - J^*}
+\end{gather*}
+Which proves our inductive hypothesis.
+Therefore, by induction $\Norm[\infty]{J_k - J^*} \leq \gamma^k\Norm[\infty]{J_0 - J^*}$.
+
+\subsection{3.1.ii)}
+\underline{Show}: that the stopping condition $\Norm[\infty]{J_{k+1} - J_k} \leq \epsilon \implies \Norm[\infty]{J_{k+1} - J^*} \leq \frac{\epsilon \gamma}{1 - \gamma}$ \\
+\underline{Solution}: \\
+Note the identity: $\frac{1}{1 - x} = 1 + x + x^2 + \dots + x^k + \dots$. This also means $\frac{x}{1 - x} = x + x^2 + \dots + x^k + \dots$ \\
+The triangle inequality says $\infnorm{a + b} \leq \infnorm{a} + \infnorm{b}$ \\
+From Lemma 3.1 and the argument in 3.1.i) we know $\infnorm{J_{k + a + 1} - J_{k + a}} \leq \gamma^a \infnorm{J_{k+1} - J_k}$
+\begin{gather*}
+    \infnorm{J_{k+1} - J^*} = \infnorm{J_{k+1} - J_{k+2} + J_{k+2} - J^*} \leq \infnorm{J_{k+2} - J_{k+1}} + \infnorm{J_{k+2} - J^*} \\
+    \implies \infnorm{J_{k+1} - J^*} \leq \infnorm{J_{k+2} - J_{k+1}} + \infnorm{J_{k+3} - J_{k+2}} + \infnorm{J_{k+3} - J^*} \\
+    \infnorm{J_{k+1} - J^*} \leq \infnorm{J_{k+2} - J_{k+1}} + \infnorm{J_{k+3} - J_{k+2}} + \infnorm{J_{k+4} - J_{k+3}} + \dots \\
+    \infnorm{J_{k+1} - J^*} \leq \gamma\infnorm{J_{k+1} - J_{k}} + \gamma^2\infnorm{J_{k+1} - J_{k}} + \gamma^3\infnorm{J_{k+1} - J_{k}} + \dots \\ 
+    \infnorm{J_{k+1} - J^*} \leq (\gamma + \gamma^2 + \gamma^3 + \dots)\infnorm{J_{k+1} - J_{k}} = \frac{\gamma}{1 - \gamma}\infnorm{J_{k+1} - J_{k}} \\
+    \therefore \Norm[\infty]{J_{k+1} - J_k} \leq \epsilon \implies \Norm[\infty]{J_{k+1} - J^*} \leq \frac{\epsilon \gamma}{1 - \gamma}
+\end{gather*}
+
+\end{document}

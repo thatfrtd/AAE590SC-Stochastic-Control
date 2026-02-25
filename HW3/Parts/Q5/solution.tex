@@ -1,0 +1,35 @@
+% !TeX root = ../../main.tex
+\documentclass[../AAE590SC_HW3.tex]{subfiles}
+\begin{document}
+
+\subsection{3.2.i)}
+\underline{Using}: Algorithm 6 compute the value function. Hint: You should obtain a value function as shown in 
+Figure 3.3. \\
+\underline{Solution}: \\
+
+\begin{figure} [H]
+    \centering
+    \caption{Convergence of value iteration algorithm for $\gamma = 0.9$}
+    \includegraphics[width=0.6\linewidth]{AAE590SC_HW3_Q3p2_value_function_convergence.png}
+\end{figure}
+
+\subsection{3.2.ii)}
+\underline{Compute}: the optimal policy. Display the optimal action at each state by showing an arrow in each cell. \\
+\underline{Solution}: \\
+
+\begin{figure} [H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{AAE590SC_HW3_Q3p2_policy.png}
+\end{figure}
+\begin{figure} [H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{AAE590SC_HW3_Q3p2_policy_gamma0p5.png}
+\end{figure}
+We can see as $\gamma$ is decreased the policy becomes more risk averse because in the square to the left of the 
+pit the policy moves in the opposite direction so there is no chance of slipping into it. For higher $\gamma$ it takes 
+this risk at the reward of potentially getting to the goal faster.
+
+\newpage
+\lstinputlisting[style=Matlab-editor,caption={Q3.2 Code}]{AAE590SC_HW3_Q3p2_regular.m}
+
+\end{document}

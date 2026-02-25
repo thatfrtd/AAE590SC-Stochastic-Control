@@ -1,0 +1,132 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% AAE 590ACA
+% HW2 Q1b
+% Author: Travis Hastreiter 
+% Created On: 24 January, 2024
+% Description: 
+% Most Recent Change: 24 January, 2024
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% b.1
+
+n = 100;
+reference_pts = rand([3, n]) * 10000;
+
+x = sym("x");
+y = sym("y");
+z = sym("z");
+
+rvec = [x; y; z];
+r = sqrt(x^2 + y^2 + z^2);
+rhat = rvec / r;
+
+% Check a.1
+a1 = r;
+a1_me = rhat.';
+a1_CAS = jacobian(a1, rvec);
+a1_check = ~all(a1_me - a1_CAS);
+
+a1_me_evals = zeros([3, n]);
+a1_CAS_evals = zeros([3, n]);
+
+for i = 1:n
+    a1_me_evals(:, i) = double(subs(a1_me, [x, y, z], reference_pts(:,i)'));
+    a1_CAS_evals(:, i) = double(subs(a1_CAS, [x, y, z], reference_pts(:,i)'));
+end
+
+hist(vecnorm(a1_CAS_evals - a1_me_evals))
+
+% Check a.2
+a2 = rhat;
+a2_me = 1 / r * (eye(3) - rhat * rhat.');
+a2_CAS = jacobian(a2, rvec);
+
+a2_me_evals = zeros([3, 3, n]);
+a2_CAS_evals = zeros([3, 3, n]);
+
+for i = 1:n
+    a2_me_evals(:, :, i) = double(subs(a2_me, [x, y, z], reference_pts(:,i)'));
+    a2_CAS_evals(:, :, i) = double(subs(a2_CAS, [x, y, z], reference_pts(:,i)'));
+end
+
+hist(pagenorm(a2_CAS_evals - a2_me_evals))
+
+% Check a.3
+R_E = 6378.1363; % [km]
+mu_E = 398600.4415; % [km3 / s2]
+J_2_val = 1.08262668e-3;
+
+mu = sym("mu");
+r_o = sym("r_o");
+J_2 = sym("J_2");
+U_J2 = -mu * r_o^2 * J_2 / 2 * (3 * z^2 / r^5 - 1 / r^3);
+
+a3 = U_J2;
+a3_me = -3 * mu * r_o^2 * J_2 / (2 * r^5) * ((1 - 5 * z^2 / r^2) * rvec.'+ [0 0 2 * z]);
+a3_CAS = jacobian(a3, rvec);
+%a3_check = ~all(a3_me - a3_CAS)
+
+a3 = subs(a3, [mu, r_o, J_2], [mu_E, R_E, J_2_val]);
+
+a3_me_evals = zeros([3, n]);
+a3_CAS_evals = zeros([3, n]);
+
+for i = 1:n
+    a3_me_evals(:, i) = double(subs(a3_me, [x, y, z, mu, r_o, J_2], [reference_pts(:,i)', mu_E, R_E, J_2_val]));
+    a3_CAS_evals(:, i) = double(subs(a3_CAS, [x, y, z, mu, r_o, J_2], [reference_pts(:,i)', mu_E, R_E, J_2_val]));
+end
+
+hist(vecnorm(a3_CAS_evals - a3_me_evals))
+
+% Check a.4
+a4 = 1 / r^5 * (1 - 5 * z^2 / r^2) * rvec;
+%a4_me = ;
+a4_CAS = jacobian(a4, rvec);
+
+%% b.2
+h = 10.^(-0:8);
+
+a1_frd = finite_right_diff(a1, reference_pts, h);
+a2_frd = finite_right_diff(a2, reference_pts, h);
+a3_frd = finite_right_diff(a3, reference_pts, h);
+a4_frd = finite_right_diff(a4, reference_pts, h);
+
+%% b.3
+
+a1_fcd = finite_central_diff(a1, reference_pts, h);
+a2_fcd = finite_central_diff(a2, reference_pts, h);
+a3_fcd = finite_central_diff(a3, reference_pts, h);
+a4_fcd = finite_central_diff(a4, reference_pts, h);
+
+%% Helper Functions
+function [e] = finite_right_diff_error(a, ref_pt, h, ref_val)
+    
+    e = zeros(length(ref_pt), length(h));
+
+    a_func = matlabFunction(a);
+    for h_i = 1:length(h)
+        for pt_i = 1:length(ref_pt)
+            d = [a_func(ref_pt(1, pt_i) + h(h_i), ref_pt(2, pt_i), ref_pt(3, pt_i)) - a_func(ref_pt(1, pt_i), ref_pt(2, pt_i), ref_pt(3, pt_i)), ...
+                 a_func(ref_pt(1, pt_i), ref_pt(2, pt_i) + h(h_i), ref_pt(3, pt_i)) - a_func(ref_pt(1, pt_i), ref_pt(2, pt_i), ref_pt(3, pt_i)), ...
+                 a_func(ref_pt(1, pt_i), ref_pt(2, pt_i), ref_pt(3, pt_i) + h(h_i)) - a_func(ref_pt(1, pt_i), ref_pt(2, pt_i), ref_pt(3, pt_i))] / h(h_i);
+            
+            e(pt_i, h_i) = norm(d - ref_val(:, :, pt_i));
+        end
+    end
+end
+
+function [e] = finite_central_diff_error(a, ref_pt, h, ref_val)
+    
+    e = zeros(length(ref_pt), length(h));
+
+    a_func = matlabFunction(a);
+    for h_i = 1:length(h)
+        for pt_i = 1:length(ref_pt)
+            d = [a_func(ref_pt(1, pt_i) + h(h_i), ref_pt(2, pt_i), ref_pt(3, pt_i)) - a_func(ref_pt(1, pt_i) - h(h_i), ref_pt(2, pt_i), ref_pt(3, pt_i)), ...
+                 a_func(ref_pt(1, pt_i), ref_pt(2, pt_i) + h(h_i), ref_pt(3, pt_i)) - a_func(ref_pt(1, pt_i), ref_pt(2, pt_i) - h(h_i), ref_pt(3, pt_i)), ...
+                 a_func(ref_pt(1, pt_i), ref_pt(2, pt_i), ref_pt(3, pt_i) + h(h_i)) - a_func(ref_pt(1, pt_i), ref_pt(2, pt_i), ref_pt(3, pt_i) - h(h_i))] / (2 * h(h_i));
+            
+            e(pt_i, h_i) = norm(d - ref_val(:, :, pt_i));
+        end
+    end
+end
